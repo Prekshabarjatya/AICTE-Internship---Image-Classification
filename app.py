@@ -11,11 +11,6 @@ def mobilenetv2_imagenet():
     
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
-        
-        # Convert image to RGB if it has an alpha channel
-        if image.mode != 'RGB':
-            image = image.convert('RGB')
-        
         st.image(image, caption='Uploaded Image', use_column_width=True)
         
         st.write("Classifying...")
@@ -44,17 +39,16 @@ def cifar10_classification():
     
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
-        
-        # Convert image to RGB if it has an alpha channel
-        if image.mode != 'RGB':
-            image = image.convert('RGB')
-        
         st.image(image, caption='Uploaded Image', use_column_width=True)
         
         st.write("Classifying...")
         
         # Load CIFAR-10 model
-        model = tf.keras.models.load_model('model111.h5')
+        try:
+            model = tf.keras.models.load_model('cifar10_model.h5')
+        except Exception as e:
+            st.write(f"Error loading model: {e}")
+            return
         
         # CIFAR-10 class names
         class_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
